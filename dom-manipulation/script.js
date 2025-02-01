@@ -13,22 +13,21 @@ const quotes = [
 
 
 const showBtn = document.getElementById("newQuote");
-showBtn.addEventListener("click", showRandomQuote);
+showBtn.addEventListener("click", displayRandomQuote);
 
-function showRandomQuote() {
+function displayRandomQuote() {
   const display = document.getElementById("quoteDisplay");
   const randomIndex = Math.floor(Math.random() * quotes.length);
   
-  // Get the random quote object
+
   const randomQuoteObject = quotes[randomIndex];
   
-  // Get the only key (category) of the random quote object
   const randomCategory = Object.keys(randomQuoteObject)[0]; 
   
-  // Get the quote text
+ 
   const randomQuote = randomQuoteObject[randomCategory];
   
-  // Create a new paragraph and display the quote
+ 
   let quote = document.createElement("p");
   quote.textContent = randomQuote;
   display.appendChild(quote);
@@ -36,8 +35,8 @@ function showRandomQuote() {
 }
 
 function addQuote(){
-  const quoteInput = document.getElementById("newQuoteText").value;
-  const categoryInput = document.getElementById("newQuoteCategory").value.toLowerCase();
+  let quoteInput = document.getElementById("newQuoteText").value;
+  let categoryInput = document.getElementById("newQuoteCategory").value.toLowerCase();
 
   let addedQuote = { [categoryInput] : quoteInput};
   if(quoteInput && categoryInput){
@@ -46,6 +45,8 @@ function addQuote(){
   else{
     alert("Quote and category filled must be filled");
   }
+  qouteInput.innerHTML = "";
+  categoryInput.innerHTML="";
 
 }
 
