@@ -13,9 +13,9 @@ const quotes = [
 
 
 const showBtn = document.getElementById("newQuote");
-showBtn.addEventListener("click", displayRandomQuote);
+showBtn.addEventListener("click", showRandomQuote);
 
-function displayRandomQuote() {
+function showRandomQuote() {
   const display = document.getElementById("quoteDisplay");
   const randomIndex = Math.floor(Math.random() * quotes.length);
   
@@ -29,7 +29,7 @@ function displayRandomQuote() {
   
  
   let quote = document.createElement("p");
-  quote.textContent = randomQuote;
+  quote.innerHTML = randomQuote;
   display.appendChild(quote);
   quote.classList.add("random-quote");
 }
