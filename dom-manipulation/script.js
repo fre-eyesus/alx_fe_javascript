@@ -32,21 +32,28 @@ function showRandomQuote() {
   quote.innerHTML = randomQuote;
   display.appendChild(quote);
   quote.classList.add("random-quote");
+  
 }
 
-function addQuote(){
-  let quoteInput = document.getElementById("newQuoteText").value;
-  let categoryInput = document.getElementById("newQuoteCategory").value.toLowerCase();
+function addQuote() {
 
-  let addedQuote = { [categoryInput] : quoteInput};
-  if(quoteInput && categoryInput){
-    quotes.push(addedQuote);
-  }
-  else{
-    alert("Quote and category filled must be filled");
-  }
-  qouteInput.innerHTML = "";
-  categoryInput.innerHTML="";
+  let quoteInputElement = document.getElementById("newQuoteText");
+  let categoryInputElement = document.getElementById("newQuoteCategory");
 
+  let quoteInput = quoteInputElement.value;
+  let categoryInput = categoryInputElement.value.toLowerCase();
+
+
+  let addedQuote = { [categoryInput]: quoteInput };
+
+  
+  if (quoteInput && categoryInput) {
+    quotes.push(addedQuote); 
+  } else {
+    alert("Quote and category fields must be filled");
+  }
+
+  quoteInputElement.value = "";
+  categoryInputElement.value = "";
 }
 
