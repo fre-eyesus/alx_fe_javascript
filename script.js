@@ -34,3 +34,16 @@ function showRandomQuote() {
   quote.classList.add("random-quote");
 }
 
+function addQuote(){
+  const quoteInput = document.getElementById("newQuoteText").value;
+  const categoryInput = document.getElementById("newQuoteCategory").value;
+
+  let addedQuote = {quoteInput: categoryInput};
+  if(quoteInput && categoryInput){
+    quotes.push(addedQuote);
+  }
+  else{
+    alert("Quote and category filled must be filled");
+  }
+}
+
