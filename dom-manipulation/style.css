@@ -22,14 +22,14 @@ h1{
     margin:auto;
     overflow-y: scroll;
 }
-.random-quote{
-    margin-top:5px;
-    color:var(--text-color);
-    font-size:12px;
-    text-align:center;
-    margin-bottom:20px;
-}
-
+.random-quote {
+    font-size: 1.2em;
+    font-style: italic;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-left: 5px solid #ccc;
+ }
 #newQuote{
     display: block;
      margin:15px auto;
