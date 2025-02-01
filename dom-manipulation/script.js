@@ -7,20 +7,20 @@ const quotes = [
   { text: "Do what you can, with what you have, where you are.", category: "perseverance" },
 ];
 
-// DOM Elements
+
 const quoteDisplay = document.getElementById("quoteDisplay");
 const showQuoteBtn = document.getElementById("newQuote");
 const categorySelect = document.getElementById("categorySelect");
 
-// Event Listeners
+
 showQuoteBtn.addEventListener("click", showRandomQuote);
 categorySelect.addEventListener("change", showRandomQuote);
 
-// Create Add Quote Form Dynamically
+
 createAddQuoteForm();
 populateCategoryDropdown();
 
-// Function to Populate Category Dropdown
+
 function populateCategoryDropdown() {
   categorySelect.innerHTML = '<option value="all">All Categories</option>';
   const uniqueCategories = [...new Set(quotes.map(q => q.category))];
@@ -33,14 +33,12 @@ function populateCategoryDropdown() {
   });
 }
 
-// Function to Show a Random Quote Based on Selected Category
+
 function showRandomQuote() {
   quoteDisplay.innerHTML = "";
 
   let selectedCategory = categorySelect.value;
-  let filteredQuotes = selectedCategory === "all"
-      ? quotes
-      : quotes.filter(q => q.category === selectedCategory);
+  let filteredQuotes = selectedCategory === "all"? quotes: quotes.filter(q => q.category === selectedCategory);
 
   if (filteredQuotes.length === 0) {
       quoteDisplay.innerHTML = "<p>No quotes available in this category.</p>";
@@ -57,10 +55,9 @@ function showRandomQuote() {
   quoteDisplay.appendChild(quoteElement);
 }
 
-// Function to Dynamically Create Add Quote Form
 function createAddQuoteForm() {
   let formContainer = document.getElementById("formContainer");
-  formContainer.innerHTML = ""; // Clear existing form
+  formContainer.innerHTML = ""; 
 
   let formHTML = `
       <div class="quote-form">
@@ -75,7 +72,7 @@ function createAddQuoteForm() {
   document.getElementById("addQuoteBtn").addEventListener("click", addQuote);
 }
 
-// Function to Add a New Quote
+
 function addQuote() {
   let quoteInput = document.getElementById("newQuoteText").value.trim();
   let categoryInput = document.getElementById("newQuoteCategory").value.trim().toLowerCase();
@@ -94,3 +91,4 @@ function addQuote() {
   alert("Quote added successfully!");
   populateCategoryDropdown();
 }
+
