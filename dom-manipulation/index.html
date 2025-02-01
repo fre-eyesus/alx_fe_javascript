@@ -7,14 +7,25 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
+   
     <h1>Dynamic Quote Generator</h1>
+
+    <!-- Dropdown for Quote Category Selection -->
+    <select id="categorySelect">
+        <option value="all">All Categories</option>
+    </select>
+
+    <!-- Quote Display Section -->
     <div id="quoteDisplay"></div>
+
+    <!-- Button to Generate Random Quote -->
     <button id="newQuote">Show New Quote</button>
-    <div class="new-quote">
-        <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
-        <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
-        <button id="addQuote" onclick="addQuote()">Add Quote</button>
-      </div>
+
+    <!-- Container for the Dynamic Form -->
+    <div id="formContainer"></div>
+
     <script src="script.js"></script>
+
+
   </body>
   </html>
