@@ -11,6 +11,7 @@ const quotes = [
   { confidence: "Believe you can and you're halfway there." }
 ];
 
+
 const showBtn = document.getElementById("newQuote");
 showBtn.addEventListener("click", showRandomQuote);
 
@@ -36,14 +37,15 @@ function showRandomQuote() {
 
 function addQuote(){
   const quoteInput = document.getElementById("newQuoteText").value;
-  const categoryInput = document.getElementById("newQuoteCategory").value;
+  const categoryInput = document.getElementById("newQuoteCategory").value.toLowerCase();
 
-  let addedQuote = {quoteInput: categoryInput};
+  let addedQuote = { [categoryInput] : quoteInput};
   if(quoteInput && categoryInput){
     quotes.push(addedQuote);
   }
   else{
     alert("Quote and category filled must be filled");
   }
+
 }
 
