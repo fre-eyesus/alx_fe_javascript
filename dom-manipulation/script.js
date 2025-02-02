@@ -263,8 +263,7 @@ function showNotification(message, type = 'info') {
   toast.className = `toast ${type}`;
   toast.textContent = message;
   document.body.appendChild(toast);
-
-  setTimeout(() => {
+  setInterval(() => {
     toast.remove();
   }, 3000);
 }
