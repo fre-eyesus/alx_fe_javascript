@@ -227,7 +227,7 @@ function updateLocalQuotes(quotes) {
 }
 
 // Sync Data with Server and Handle Conflicts
-async function syncData() {
+async function syncQuotes() {
   const serverQuotes = await fetchQuotesFromServer();
   let localQuotes = getLocalQuotes();
 
@@ -305,7 +305,7 @@ function resolveConflict(selectedQuote) {
 
 // Start Periodic Syncing Every 5 Minutes
 function startSync() {
-  syncData().then(() => {
+syncQuotes().then(() => {
     setTimeout(startSync, 5 * 60 * 1000);
   });
 }
