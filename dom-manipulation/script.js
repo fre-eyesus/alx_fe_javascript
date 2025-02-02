@@ -38,7 +38,7 @@ function populateCategories(){
 
 window.addEventListener("load", () => {
   const categorySelect = document.getElementById("categoryFilter");
-  const lastSelectedCategory = localStorage.getItem("lastSelectedCategory");
+  const lastSelectedCategory = JSON.parse(localStorage.getItem("lastSelectedCategory"));
   
   if (lastSelectedCategory) {
     categorySelect.value = lastSelectedCategory; 
