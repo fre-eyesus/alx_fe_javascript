@@ -299,7 +299,7 @@ function resolveConflict(selectedQuote) {
   localQuotes = localQuotes.filter(q => q.id !== selectedQuote.id);
   localQuotes.push(selectedQuote);
   updateLocalQuotes(localQuotes);
-  showNotification(`Conflict resolved for quote ID ${selectedQuote.id}`, 'success');
+  showNotification(`Quotes synced with server! ${selectedQuote.id}`, 'success');
 }
 
 // Start Periodic Syncing Every 5 Minutes
