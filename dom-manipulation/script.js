@@ -200,10 +200,13 @@ function updateLocalQuotes(quotes) {
 // Sync data with the server
 const serverUrl = 'https://jsonplaceholder.typicode.com/posts';
 
+
+
 // Fetch quotes from the server (Simulated API)
 async function fetchQuotesFromServer() {
   try {
-    const response = await fetch(serverUrl);
+    const response = await fetch(serverUrl,{ method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(quote)});
     const data = await response.json();
     console.log('Fetched quotes from server:', data);
     return data;
