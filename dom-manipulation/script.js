@@ -174,25 +174,10 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-// Setup Server Simulation
-// async function fetchQuotes(){
-//   try{
-//     const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
-//     const data = await response.json();
-//     return data
-//   }
-//   catch(e){
-//     console.error("Error fetching data");
-//   }
-// }
-// setTimeout(async () => {
-//   const quotes = await fetchQuotes();
-//   console.log('Fetched quotes:', quotes);
-// }, 4000); 
-// Fetch quotes from the server
+
 async function fetchQuotes() {
   try {
-    const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+    const response = await fetch('https://jsonplaceholder.typicode.com/todos');
     const data = await response.json();
     console.log('Fetched quotes from server:', data);
     return data;
@@ -215,27 +200,28 @@ function updateLocalQuotes(quotes) {
 // Sync data with the server
 async function syncData() {
   const serverQuotes = await fetchQuotes();
+  
+  if (!Array.isArray(serverQuotes)) {  // Ensure serverQuotes is an array
+    console.error('Server did not return an array.');
+    return;
+  }
+
   let localQuotes = getLocalQuotes();
 
   serverQuotes.forEach(serverQuote => {
     const localQuote = localQuotes.find(q => q.id === serverQuote.id);
 
-    // If the quote doesn't exist locally or the server's version is newer
     if (!localQuote || new Date(serverQuote.lastUpdated) > new Date(localQuote.lastUpdated)) {
-
       showNotification(`Quote ID ${serverQuote.id} updated from server`, 'info');
-      console.log(`Updating local quote ID ${serverQuote.id} with server data`);
-      localQuotes = localQuotes.filter(q => q.id !== serverQuote.id); // Remove old version
-      localQuotes.push(serverQuote); // Add server's version
+      localQuotes = localQuotes.filter(q => q.id !== serverQuote.id);
+      localQuotes.push(serverQuote);
     }
   });
 
-  // Handle conflicts
   handleConflicts(localQuotes, serverQuotes);
-
-  // Save the updated quotes to local storage
   updateLocalQuotes(localQuotes);
 }
+
 
 // Handle conflicts
 function handleConflicts(localQuotes, serverQuotes) {
