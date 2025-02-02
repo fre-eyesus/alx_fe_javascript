@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded",filterQuotes);
 function populateCategories(){
   categorySelect.innerHTMl = '<option value="all">All categories</option>';
   const uniqueCategories = [...new Set(quotes.map(q => q.category))]
+  localStorage.setItem("categories",JSON.stringify(uniqueCategories));
   uniqueCategories.forEach(cat =>{
     let option = document.createElement("option");
     option.value =  cat;
@@ -37,22 +38,45 @@ function populateCategories(){
 }
 
 window.addEventListener("load", () => {
-  const categorySelect = document.getElementById("categoryFilter");
-  const lastSelectedCategory = JSON.parse(localStorage.getItem("lastSelectedCategory"));
   
-  if (lastSelectedCategory) {
-    categorySelect.value = lastSelectedCategory; 
+  const savedQuotes = localStorage.getItem("quotes");
+  if (savedQuotes) {
+    quotes.length = 0; 
+    quotes.push(...JSON.parse(savedQuotes)); 
   }
+
+  // Restore categories from localStorage
+  const savedCategories = localStorage.getItem("categories");
+  if (savedCategories) {
+    const uniqueCategories = JSON.parse(savedCategories);
+    categorySelect.innerHTML = '<option value="all">All Categories</option>'; 
+
+    uniqueCategories.forEach(cat => {
+      let option = document.createElement("option");
+      option.value = cat;
+      option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1); 
+      categorySelect.appendChild(option);
+    });
+  }
+
+  // Restore the last selected category
+  const lastSelectedCategory = localStorage.getItem("lastSelectedCategory");
+  if (lastSelectedCategory) {
+    categorySelect.value = lastSelectedCategory; // Set the dropdown to the last selected category
+  }
+
+  // Display quotes based on the restored category
   filterQuotes();
 });
-
 
 
 function filterQuotes() {
 
   quoteDisplay.innerHTML = "";
   let selectedCategory = categorySelect.value;
+  // save the selected category to local storage
   localStorage.setItem("lastSelectedCategory",selectedCategory);
+
   let filteredQuotes = selectedCategory === "all"? quotes: quotes.filter(q => q.category === selectedCategory);
 
   if (filteredQuotes.length === 0) {
@@ -68,7 +92,6 @@ function filterQuotes() {
   quoteElement.classList.add("random-quote");
   
   quoteDisplay.appendChild(quoteElement);
-  quotes.push(filteredQuotes);
 
  }
 
@@ -103,6 +126,7 @@ function addQuote() {
   let newQuote = { text: quoteInput, category: categoryInput };
   quotes.push(newQuote);
   
+  localStorage.setItem("quotes",JSON.stringify(quotes));
 
   document.getElementById("newQuoteText").value = "";
   document.getElementById("newQuoteCategory").value = "";
