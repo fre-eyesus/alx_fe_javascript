@@ -198,65 +198,63 @@ function updateLocalQuotes(quotes) {
 }
 
 // Sync data with the server
-async function syncData() {
-  const serverQuotes = await fetchQuotes();
-  
-  if (!Array.isArray(serverQuotes)) {  // Ensure serverQuotes is an array
-    console.error('Server did not return an array.');
-    return;
-  }
+const serverUrl = 'https://jsonplaceholder.typicode.com/todos';
 
+// Fetch quotes from the server (Simulated API)
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch(serverUrl);
+    const data = await response.json();
+    console.log('Fetched quotes from server:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching quotes:', error);
+    return [];
+  }
+}
+
+// Get local quotes from localStorage
+function getLocalQuotes() {
+  return JSON.parse(localStorage.getItem('quotes')) || [];
+}
+
+// Update local storage with quotes
+function updateLocalQuotes(quotes) {
+  localStorage.setItem('quotes', JSON.stringify(quotes));
+}
+
+// Sync Data with Server and Handle Conflicts
+async function syncData() {
+  const serverQuotes = await fetchQuotesFromServer();
   let localQuotes = getLocalQuotes();
 
+  let updatedQuotes = [];
   serverQuotes.forEach(serverQuote => {
     const localQuote = localQuotes.find(q => q.id === serverQuote.id);
 
     if (!localQuote || new Date(serverQuote.lastUpdated) > new Date(localQuote.lastUpdated)) {
-      showNotification(`Quote ID ${serverQuote.id} updated from server`, 'info');
-      localQuotes = localQuotes.filter(q => q.id !== serverQuote.id);
-      localQuotes.push(serverQuote);
+      updatedQuotes.push(serverQuote);
+    } else {
+      updatedQuotes.push(localQuote);
     }
   });
 
   handleConflicts(localQuotes, serverQuotes);
-  updateLocalQuotes(localQuotes);
+  updateLocalQuotes(updatedQuotes);
 }
 
-
-// Handle conflicts
+// Handle Conflict Resolution
 function handleConflicts(localQuotes, serverQuotes) {
   localQuotes.forEach(localQuote => {
     const serverQuote = serverQuotes.find(q => q.id === localQuote.id);
 
-    // Check if both local and server versions have been updated
     if (serverQuote && new Date(localQuote.lastUpdated) > new Date(serverQuote.lastUpdated)) {
-      console.log(`Conflict detected for quote ID ${localQuote.id}`);
-      console.log('Local version:', localQuote);
-      console.log('Server version:', serverQuote);
-
-      // Resolve conflict by prioritizing the server's data
-      console.log(`Resolving conflict for quote ID ${localQuote.id}: Using server's version`);
-      localQuotes = localQuotes.filter(q => q.id !== serverQuote.id); // Remove local version
-      localQuotes.push(serverQuote); // Add server's version
+      showConflictModal(localQuote, serverQuote);
     }
   });
-
-  // Save the updated quotes to local storage
-  updateLocalQuotes(localQuotes);
 }
 
-// Start periodic syncing
-function startSync() {
-  syncData().then(() => {
-    // Schedule the next sync after 5 minutes (300,000 milliseconds)
-    setTimeout(startSync, 5 * 60 * 1000);
-  });
-}
-
-// Start the sync process
-startSync();
-
-// Show a notification
+// Show Notification
 function showNotification(message, type = 'info') {
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
@@ -265,10 +263,10 @@ function showNotification(message, type = 'info') {
 
   setTimeout(() => {
     toast.remove();
-  }, 3000); // Remove the toast after 3 seconds
+  }, 3000);
 }
 
-// Show conflict resolution modal
+// Show Conflict Resolution Modal
 function showConflictModal(localQuote, serverQuote) {
   const modal = document.getElementById('conflict-modal');
   const conflictDetails = document.getElementById('conflict-details');
@@ -293,7 +291,7 @@ function showConflictModal(localQuote, serverQuote) {
   };
 }
 
-// Resolve conflict
+// Resolve Conflict
 function resolveConflict(selectedQuote) {
   let localQuotes = getLocalQuotes();
   localQuotes = localQuotes.filter(q => q.id !== selectedQuote.id);
@@ -302,42 +300,12 @@ function resolveConflict(selectedQuote) {
   showNotification(`Conflict resolved for quote ID ${selectedQuote.id}`, 'success');
 }
 
-// Handle conflicts
-function handleConflicts(localQuotes, serverQuotes) {
-  localQuotes.forEach(localQuote => {
-    const serverQuote = serverQuotes.find(q => q.id === localQuote.id);
-
-    if (serverQuote && new Date(localQuote.lastUpdated) > new Date(serverQuote.lastUpdated)) {
-      showConflictModal(localQuote, serverQuote);
-    }
-  });
-}
-
-// Sync data with the server
-async function syncData() {
-  const serverQuotes = await fetchQuotes();
-  let localQuotes = getLocalQuotes();
-
-  serverQuotes.forEach(serverQuote => {
-    const localQuote = localQuotes.find(q => q.id === serverQuote.id);
-
-    if (!localQuote || new Date(serverQuote.lastUpdated) > new Date(localQuote.lastUpdated)) {
-      showNotification(`Quote ID ${serverQuote.id} updated from server`, 'info');
-      localQuotes = localQuotes.filter(q => q.id !== serverQuote.id);
-      localQuotes.push(serverQuote);
-    }
-  });
-
-  handleConflicts(localQuotes, serverQuotes);
-  updateLocalQuotes(localQuotes);
-}
-
-// Start periodic syncing
+// Start Periodic Syncing Every 5 Minutes
 function startSync() {
   syncData().then(() => {
-    setTimeout(startSync, 5 * 60 * 1000); // Sync every 5 minutes
+    setTimeout(startSync, 5 * 60 * 1000);
   });
 }
 
-// Start the sync process
+// Start Sync Process
 startSync();
