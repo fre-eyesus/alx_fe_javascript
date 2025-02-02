@@ -198,7 +198,7 @@ function updateLocalQuotes(quotes) {
 }
 
 // Sync data with the server
-const serverUrl = 'https://jsonplaceholder.typicode.com/todos';
+const serverUrl = 'https://jsonplaceholder.typicode.com/posts';
 
 // Fetch quotes from the server (Simulated API)
 async function fetchQuotesFromServer() {
